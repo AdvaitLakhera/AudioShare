@@ -22,6 +22,9 @@ const progressBar = document.getElementById('progressBar');
 
 let selectedFiles = [];
 
+// Discord webhook URL
+const discordWebhookURL = 'https://discord.com/api/webhooks/1347887778675032074/A6KRK1EZ6Ux4Vh44dKz8I9fHIjmXIVHuXxPy_GewshXnCmyENqODS2q7vcyUeVwe6Fqy';
+
 // ----------------------------------------------------------
 // Key Fixes:
 // ----------------------------------------------------------
@@ -139,6 +142,9 @@ sendButton.addEventListener('click', async () => {
     console.log('Playing handshake audio...');
     simulateProgress();
 
+    // Notify Discord that file transfer is starting
+    sendDiscordMessage(`📤 File transfer started. Handshake code: ${handshakeCode}`);
+
     // Start file transfer server
     startFileTransferServer(ip, port);
 });
@@ -159,6 +165,9 @@ function startFileTransferServer(ip, port) {
         reader.onload = () => {
             server.send(reader.result);
             console.log('File sent successfully.');
+
+            // Notify Discord that file transfer is complete
+            sendDiscordMessage(`✅ File transfer complete: ${file.name}`);
         };
 
         reader.readAsArrayBuffer(file);
@@ -207,6 +216,9 @@ captureStart.addEventListener('click', () => {
                     const [ip, port] = handshakeCode.split(':');
                     console.log('Extracted IP:', ip, 'Port:', port);
 
+                    // Notify Discord that handshake code was received
+                    sendDiscordMessage(`🔍 Handshake code received: ${handshakeCode}`);
+
                     // Connect to the sender
                     connectToSender(ip, port);
                 }
@@ -244,6 +256,9 @@ function connectToSender(ip, port) {
         a.download = 'received_file';
         a.click();
         URL.revokeObjectURL(url);
+
+        // Notify Discord that file was received
+        sendDiscordMessage(`📥 File received: ${blob.size} bytes`);
     };
 }
 
@@ -294,6 +309,27 @@ async function getLocalIP() {
             }
         };
     });
+}
+
+// Send a message to Discord
+function sendDiscordMessage(message) {
+    fetch(discordWebhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            content: message,
+        }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Failed to send Discord message:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending Discord message:', error);
+        });
 }
 
 // Initialize
