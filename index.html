@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScreechSend</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="title">🦉 ScreechSend</h1>
+
+    <!-- Sender Section -->
+    <div class="card sender">
+        <h2>Send Files</h2>
+        <div class="drop-zone" id="dropZone">
+            <label for="fileInput" class="file-label">
+                Drag & Drop Files or Click to Browse
+            </label>
+            <input type="file" id="fileInput" multiple>
+        </div>
+        <div id="fileList"></div>
+        <button id="sendButton" class="button">Generate Sound Handshake</button>
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Receiver Section -->
+    <div class="card receiver">
+        <h2>Receive Files</h2>
+        <button id="captureStart" class="button">Start Listening</button>
+        <button id="captureStop" class="button" hidden>Stop Listening</button>
+        <div id="receiverStatus" class="status">Status: Idle</div>
+        <div id="receivedFiles"></div>
+    </div>
+</div>
+
+<!-- Load ggwave.js -->
+<script src="ggwave.js"></script>
+<script src="script.js" defer></script>
+</body>
+</html>
