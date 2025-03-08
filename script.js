@@ -151,7 +151,7 @@ sendButton.addEventListener('click', async () => {
 
 // Start a simple file transfer server
 function startFileTransferServer(ip, port) {
-    const server = new WebSocket(`ws://${ip}:${port}`);
+    const server = new WebSocket(`wss://${ip}:${port}`);
 
     server.onopen = () => {
         console.log('File transfer server started.');
@@ -240,7 +240,7 @@ captureStart.addEventListener('click', () => {
 
 // Connect to the sender and request file transfer
 function connectToSender(ip, port) {
-    const client = new WebSocket(`ws://${ip}:${port}`);
+    const client = new WebSocket(`wss://${ip}:${port}`);
 
     client.onopen = () => {
         console.log('Connected to sender. Requesting file transfer...');
